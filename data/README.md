@@ -1,0 +1,1 @@
+**Extract the contents of GNAF data to this folder**
