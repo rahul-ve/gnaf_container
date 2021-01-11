@@ -10,6 +10,9 @@ services:
     hostname: gnaf_pg_db
     image: gnaf_postgis:v1
     shm_size: 1gb
+    user: postgres
+    group_add:
+      - 1111                           # On Linux, change this to the group on ./data & ./scripts folders to avoid permissions issues with bind mounts!!
     environment:
       POSTGRES_DB: geo
       POSTGRES_USER: guser
