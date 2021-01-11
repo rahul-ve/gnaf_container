@@ -1,6 +1,7 @@
 ## GNAF - Geocoded National Address File Database
 
 Below information provides instructions on how to build the GNAF database in a Docker container. 
+Tested on Windows10/WSL2 and Ubuntu.
 
 ###  Prerequisites
 - GNAF data files from [data.gov.au](https://data.gov.au/dataset/ds-dga-19432f89-dc3a-4ef3-b943-5326ef1dbecc/details?q=gnaf)
@@ -39,6 +40,7 @@ nov20_gnaf_pipeseparatedvalue_gda2020
 - To rebuild the database, delete the named volume!
 - To add or modify initialization steps, either modify the entrypoint script **(90_gnaf_db_setup.sh)** or add additional scripts to **/docker-entrypoint-initdb.d/** directory. These can be shell or sql scripts and are executed in sorted name order
 - Any user scripts can be saved to "scripts" folder and accessed from within the container
+- On Linux (Debian based) host systems make sure to change the "group_add" key in the compose file to the id of the group (with write permissions) on the host system for **./data** folder, this will avoid the permissions issue with the bind mounts. OR change the permissions on the host system to allow writes from the container. This should not be an issue on Windows!
 
 
 ### Docker Build Context Structure

@@ -1,0 +1,5 @@
+.git
+README.md
+/data
+/gnaf_docker_compose.yaml
+/gnaf_dockerfile
