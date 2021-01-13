@@ -18,8 +18,6 @@ DECLARE
 
 BEGIN  
  
-    SET search_path TO gnaf202011;     --SET SCHEMA 'gnaf202011';
-
     -- AUTHORITY CODE TABLE
 
     CREATE TABLE ac_files (

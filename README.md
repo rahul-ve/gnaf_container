@@ -1,6 +1,6 @@
 ## GNAF - Geocoded National Address File Database
 
-Below information provides instructions on how to build the GNAF database in a Docker container. 
+Below information provides instructions on how to build the GNAF database in a Docker container making use of the provided scripts that are packaged along with the GNAF data. Data is loaded via the PostgreSQL COPY command. 
 Tested on Windows10/WSL2 and Ubuntu.
 
 ###  Prerequisites
