@@ -1,4 +1,4 @@
-FROM postgis/postgis:13.1 AS pgimg
+FROM postgis/postgis:13-3.1 AS pgimg
 
 RUN apt-get update \
       && apt-cache showpkg gawk \

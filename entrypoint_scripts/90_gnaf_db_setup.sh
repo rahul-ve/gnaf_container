@@ -35,7 +35,6 @@ PROVIDED_SCRIPTS_PATH="/gnaf_data/$GNAF_DATA_FOLDER/G-NAF/Extras"
 ## update load_data.sql with the right file path for data files
 perl -i -pe "s|file_path_prefix TEXT := .*$|file_path_prefix TEXT := '$DATA_FILES_PATH/';|" "$USER_SCRIPTS/load_data.sql"
 
-
 ## STEP 2
 
 ## Authority Code tables
