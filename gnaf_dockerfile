@@ -1,9 +1,6 @@
-FROM postgis/postgis:13-master AS pgimg
-
-LABEL maintainer="rv.work@outlook.com"
+FROM postgis/postgis:13.1 AS pgimg
 
 RUN apt-get update \
       && apt-cache showpkg gawk \
       && apt-get install -y --no-install-recommends gawk \
       && rm -rf /var/lib/apt/lists/*
-
