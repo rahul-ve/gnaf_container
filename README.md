@@ -1,6 +1,6 @@
 ## GNAF - Geocoded National Address File Database
 
-Below information provides instructions on how to build the GNAF database in a Docker container making use of the provided scripts that are packaged along with the GNAF data. Data is loaded via the PostgreSQL COPY command. 
+Below information provides instructions on how to build the GNAF database in a Docker container making use of the provided scripts that are packaged along with the GNAF data. Data is loaded via the PostgreSQL COPY command.
 Tested on Windows10/WSL2 and Ubuntu.
 
 ###  Prerequisites
@@ -9,6 +9,11 @@ Tested on Windows10/WSL2 and Ubuntu.
 ### Instructions
 
 - Extract the GNAF data to the "data" folder, refer to the example folder structure below
+- Update parameters:
+    - run this command to see what values need changing: `grep -rnw -e "UPDATE_VALUE"`
+    - `file_path_prefix`   in  load_data.sql
+    - `DATA_FILES_PATH` and `PROVIDED_SCRIPTS_PATH` in 90_gnaf_db_setup.sh
+- Make sure `data` folder has 775 permissions: `chmod 755 ./data`  (this is on the host system)
 - Update settings in gnaf_docker_compose.yaml file if needed **(e.g. Database name, Username, Password, Schema name..)**
     - **Some of the environment variables are used in entrypoint scripts, be careful modifying them!**
 - run
@@ -19,7 +24,7 @@ Tested on Windows10/WSL2 and Ubuntu.
 
 ### Remarks
 
-- First run takes some time (varies depending on the system resources, takes advantage of multi-core CPU) to build the database. Uses a Docker named volume **(geo_db_volume)** to store database data. On subsequent runs, this volume is used so any changes made are persisted. The entrypoint scripts are skipped if this named volume is present. 
+- First run takes some time (varies depending on the system resources, takes advantage of multi-core CPU) to build the database. Uses a Docker named volume **(geo_db_volume)** to store database data. On subsequent runs, this volume is used so any changes made are persisted. The entrypoint scripts are skipped if this named volume is present.
     - Ignore errors like `ERROR:  canceling autovacuum task`, DB build is still happening in the background.
     - Some stages take a fair amount of time  (upwards of 30mins) and will not output any logs in-between, be patient, wait for **GNAF DB setup complete** log entry.
 - To rebuild the database, delete the named volume!
