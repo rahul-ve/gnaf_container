@@ -15,7 +15,7 @@ services:
       - 1000                          # On Linux, change this to the group on ./data & ./scripts folders to avoid permissions issues with bind mounts!!
     environment:
       POSTGRES_DB: geo                 # used in entrypoint script
-      POSTGRES_USER: guser              # used in entrypoint script
+      POSTGRES_USER: postgres              # used in entrypoint script
       POSTGRES_PASSWORD: geogeo!
       PGDATA: /var/lib/postgresql/data
       GNAF_SCHEMA: gnaf                    # used in entrypoint script
