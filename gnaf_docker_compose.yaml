@@ -5,14 +5,14 @@ services:
     build:
       context: .
       dockerfile: ./gnaf_dockerfile
-    restart: unless-stopped
+    restart: "no"
     container_name: gnaf_pg_service
     hostname: gnaf_pg_db
     image: gnaf_postgis:v1
     shm_size: 1gb
     user: postgres
     group_add:
-      - 1000                          # On Linux, change this to the group on ./data & ./scripts folders to avoid permissions issues with bind mounts!!
+      - "1000"                          # On Linux, change this to the group on ./data & ./scripts folders to avoid permissions issues with bind mounts, also host folders should have write/execute permission  (774, 754) for the group, middle number should be either 7 or 5!!   OR if host folder has 777, then no need for group_add...
     environment:
       POSTGRES_DB: geo                 # used in entrypoint script
       POSTGRES_USER: postgres              # used in entrypoint script
