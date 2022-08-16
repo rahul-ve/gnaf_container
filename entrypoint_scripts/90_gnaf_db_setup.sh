@@ -24,9 +24,17 @@ DB_="$POSTGRES_DB"
 SCHEMA_="$GNAF_SCHEMA"
 SEARCH_PATH_="$GNAF_SCHEMA,public"
 
+
 ## 
-DATA_FILES_PATH="/gnaf_data/nov20_gnaf_pipeseparatedvalue_gda2020/G-NAF/G-NAF NOVEMBER 2020"
-PROVIDED_SCRIPTS_PATH="/gnaf_data/nov20_gnaf_pipeseparatedvalue_gda2020/G-NAF/Extras"
+#GNAF_DATA_FOLDER="$(ls /gnaf_data | grep -i gda2020)"        # hacky!
+GNAF_DATA_FOLDER="$(find /gnaf_data -type d -name 'G-NAF' | xargs dirname | xargs basename)"     # looking for G-NAF folder in parent dir
+GNAF_MAIN_DATA_FILES_FOLDER="$(ls /gnaf_data/$GNAF_DATA_FOLDER/G-NAF | grep -Ee "G-NAF\s+[A-Z]+\s+20[0-9]{2}")"
+DATA_FILES_PATH="/gnaf_data/$GNAF_DATA_FOLDER/G-NAF/$GNAF_MAIN_DATA_FILES_FOLDER"
+PROVIDED_SCRIPTS_PATH="/gnaf_data/$GNAF_DATA_FOLDER/G-NAF/Extras"
+
+## update load_data.sql with the right file path for data files
+perl -i -pe "s|file_path_prefix TEXT := .*$|file_path_prefix TEXT := '$DATA_FILES_PATH/';|" "$USER_SCRIPTS/load_data.sql"
+
 
 ## STEP 2
 
@@ -53,3 +61,6 @@ psql -d "$DB_" --username "$POSTGRES_USER" -c "SET search_path TO $SEARCH_PATH_;
 
 ## STEP 7
 psql -d "$DB_" --username "$POSTGRES_USER" -c "SET search_path TO $SEARCH_PATH_;" -f "$PROVIDED_SCRIPTS_PATH/GNAF_View_Scripts/address_view.sql"
+
+# END
+echo "GNAF DB setup complete"

@@ -20,6 +20,8 @@ Tested on Windows10/WSL2 and Ubuntu.
 ### Remarks
 
 - First run takes some time (varies depending on the system resources, takes advantage of multi-core CPU) to build the database. Uses a Docker named volume **(geo_db_volume)** to store database data. On subsequent runs, this volume is used so any changes made are persisted. The entrypoint scripts are skipped if this named volume is present. 
+    - Ignore errors like `ERROR:  canceling autovacuum task`, DB build is still happening in the background.
+    - Some stages take a fair amount of time  (upwards of 30mins) and will not output any logs in-between, be patient, wait for **GNAF DB setup complete** log entry.
 - To rebuild the database, delete the named volume!
 - To add or modify initialization steps, either modify the entrypoint script **(90_gnaf_db_setup.sh)** or add additional scripts to **/docker-entrypoint-initdb.d/** directory. These can be shell or sql scripts and are executed in sorted name order
 - Any user scripts can be saved to "scripts" folder and accessed from within the container
