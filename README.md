@@ -27,6 +27,7 @@ Tested on Windows10/WSL2 and Ubuntu.
 - First run takes some time (varies depending on the system resources, takes advantage of multi-core CPU) to build the database. Uses a Docker named volume **(geo_db_volume)** to store database data. On subsequent runs, this volume is used so any changes made are persisted. The entrypoint scripts are skipped if this named volume is present.
     - Ignore errors like `ERROR:  canceling autovacuum task`, DB build is still happening in the background.
     - Some stages take a fair amount of time  (upwards of 30mins) and will not output any logs in-between, be patient, wait for **GNAF DB setup complete** log entry.
+    - Tail docker contianer logs to get exact status - `docker logs -f <CONTAINER NAME OR ID>`
 - To rebuild the database, delete the named volume!
 - To add or modify initialization steps, either modify the entrypoint script **(90_gnaf_db_setup.sh)** or add additional scripts to **/docker-entrypoint-initdb.d/** directory. These can be shell or sql scripts and are executed in sorted name order
 - Any user scripts can be saved to "scripts" folder and accessed from within the container
@@ -35,17 +36,17 @@ Tested on Windows10/WSL2 and Ubuntu.
 
 ### GNAF data files
 ```
-nov20_gnaf_pipeseparatedvalue_gda2020
+g-naf_xxx_gda2020_psv               ## this is the extracted zip folder, name changes often!
 ├── Contents.txt
 ├── Counts.csv
-└── G-NAF
+└── G-NAF                           ## This is the main folder with all the contents needed to rebuilt the db, name seems to not change!
     ├── Documents
     │   ├── G-NAF Product Description.pdf
     │   └── G-NAF Release Report November 2020.pdf
     ├── Extras
     │   ├── GNAF_TableCreation_Scripts
     │   └── GNAF_View_Scripts
-    └── G-NAF NOVEMBER 2020
+    └── G-NAF NOVEMBER 2020          ## This is the main folder with the data, name changes, has month and year in name!
         ├── Authority Code
         ├── Standard
 ```
@@ -53,7 +54,7 @@ nov20_gnaf_pipeseparatedvalue_gda2020
 ```
 ├── README.md
 ├── data
-│   └── nov20_gnaf_pipeseparatedvalue_gda2020
+│   └── g-naf_xxx_gda2020_psv               ## this is the extracted zip folder, name changes often!
 ├── gnaf_docker_compose.yaml
 ├── entrypoint_scripts
 │   └── 99_gnaf_db_setup.sh
