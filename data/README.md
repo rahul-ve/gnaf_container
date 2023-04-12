@@ -3,5 +3,5 @@
 e.g.
 ```
 data/
-└── nov20_gnaf_pipeseparatedvalue_gda2020
+└── g-naf_xxx_gda2020_psv               ## this is the extracted zip folder, name changes often!
 ```

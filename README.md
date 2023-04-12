@@ -9,30 +9,33 @@ Tested on Windows10/WSL2 and Ubuntu.
 ### Instructions
 
 - Extract the GNAF data to the "data" folder, refer to the example folder structure below
-- Update parameters:
-    - run this command to see what values need changing: `grep -rnw -e "UPDATE_VALUE"`
-    - `file_path_prefix`   in  load_data.sql
-    - `DATA_FILES_PATH` and `PROVIDED_SCRIPTS_PATH` in 90_gnaf_db_setup.sh
-- Make sure `data` folder has 775 permissions: `chmod 755 ./data`  (this is on the host system)
+- Make sure `data` folder has `775` permissions on `*nix` systems: `chmod 755 ./data`  (this is on the host system)
 - Update settings in gnaf_docker_compose.yaml file if needed **(e.g. Database name, Username, Password, Schema name..)**
     - **Some of the environment variables are used in entrypoint scripts, be careful modifying them!**
+- Values of below parameters in `entrypoint_scripts/90_gnaf_db_setup.sh` depend on the folder names and structure of the extracted GNAF data. Refer to the logic in the script if there are any issues.
+
+    ```
+    GNAF_DATA_FOLDER
+    GNAF_MAIN_DATA_FILES_FOLDER
+    ```
 - run
-    -  ```$ docker-compose -f ./gnaf_docker_compose.yaml up -d ```
+    -  `$ docker-compose -f ./gnaf_docker_compose.yaml up -d`
 
 - connect via psql
-    - ```$ psql -h localhost -d geo -U guser```
+    - `$ psql -h localhost -d <DATABASE NAME> -U <POSTGRES USER>`
 
 ### Remarks
 
-- First run takes some time (varies depending on the system resources, takes advantage of multi-core CPU) to build the database. Uses a Docker named volume **(geo_db_volume)** to store database data. On subsequent runs, this volume is used so any changes made are persisted. The entrypoint scripts are skipped if this named volume is present.
+- First run takes some time (varies depending on the system resources, takes advantage of multi-core CPU) to build the database. Uses a Docker named volume `geo_db_volume` to store database data. On subsequent runs, this volume is used so any changes made are persisted. The entrypoint scripts are skipped if this named volume is present.
     - Ignore errors like `ERROR:  canceling autovacuum task`, DB build is still happening in the background.
-    - Some stages take a fair amount of time  (upwards of 30mins) and will not output any logs in-between, be patient, wait for **GNAF DB setup complete** log entry.
+    - Some stages take a fair amount of time  (upwards of 30mins) and will not output any logs in-between, be patient, wait for `GNAF DB setup complete` log entry.
+    - Connections to the database might not succeed prior to finishing the database build.
     - Tail docker contianer logs to get exact status - `docker logs -f <CONTAINER NAME OR ID>`
 - To rebuild the database, delete the named volume!
-- To add or modify initialization steps, either modify the entrypoint script **(90_gnaf_db_setup.sh)** or add additional scripts to **/docker-entrypoint-initdb.d/** directory. These can be shell or sql scripts and are executed in sorted name order
+- To add or modify initialization steps, either modify the entrypoint script `entrypoint_scripts/90_gnaf_db_setup.sh` or add additional scripts to `/entrypoint_scripts/` directory. These can be shell or sql scripts and are executed in sorted name order
 - Any user scripts can be saved to "scripts" folder and accessed from within the container
-- On Linux host systems make sure to change the "group_add" key in the compose file to the id of the group (with write permissions) on the host system for **./data** folder, this will avoid the permissions issue with the bind mounts. OR change the permissions on the host system to allow writes from the container. This should not be an issue on Windows!
-- Authority Code and Standard table names are matched to the "psv" files using an awk script that relies on the naming scheme/pattern used for the "psv" files. Please look at the code in **entrypoint_scripts/99_gnaf_db_setup.sh**
+- On Linux host systems make sure to change the "group_add" key in the compose file to the id of the group (with write permissions) on the host system for `./data` folder, this will avoid the permissions issue with the bind mounts. OR change the permissions on the host system to allow writes from the container. This should not be an issue on Windows!
+- `Authority Code` and `Standard` table names are matched to the `psv` files using an awk script that relies on the naming scheme/pattern used for the `psv` files. Please look at the code in `entrypoint_scripts/99_gnaf_db_setup.sh`.
 
 ### GNAF data files
 ```

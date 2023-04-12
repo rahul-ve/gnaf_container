@@ -3,9 +3,8 @@ DO $$
 DECLARE
 
     -- Download the GNAF dump files from data.gov.au and extract it to a location that is accessible from the PostgreSQL server
-    -- Declare the path to CSV files. Probably need to put this in PostgreSQL file path to avoid permission issues.
 
-    -- BELOW GETS REPLACED WHEN LOADING db DATA, LOOK AT entrypoint SCRIPT!
+    -- BELOW GETS SET TO CORRECT VALUE WHEN LOADING db DATA, LOOK AT entrypoint_scripts/90_gnaf_db_setup.sh SCRIPT!
     file_path_prefix TEXT := '/gnaf_data/g-naf_feb23_allstates_gda2020_psv_1010/G-NAF/G-NAF FEBRUARY 2023/';
 
     data_folder_in_container TEXT := '/gnaf_data/';

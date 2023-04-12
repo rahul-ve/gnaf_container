@@ -25,7 +25,8 @@ SCHEMA_="$GNAF_SCHEMA"
 SEARCH_PATH_="$GNAF_SCHEMA,public"
 
 
-##
+## STEP 1
+
 DATA_FOLDER_IN_CONTAINER="/gnaf_data"
 #GNAF_DATA_FOLDER="$(ls $DATA_FOLDER_IN_CONTAINER | grep -i gda2020)"        # hacky!
 GNAF_DATA_FOLDER="$(find $DATA_FOLDER_IN_CONTAINER -type d -name 'G-NAF' | xargs dirname | xargs basename)"     # looking for G-NAF folder in parent dir
