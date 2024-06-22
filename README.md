@@ -32,7 +32,7 @@ Tested on Windows10/WSL2 and Ubuntu.
     - Connections to the database might not succeed prior to finishing the database build.
     - Tail docker contianer logs to get exact status - `docker logs -f <CONTAINER NAME OR ID>`
 - To rebuild the database, delete the named volume!
-- To add or modify initialization steps, either modify the entrypoint script `entrypoint_scripts/90_gnaf_db_setup.sh` or add additional scripts to `/entrypoint_scripts/` directory. These can be shell or sql scripts and are executed in sorted name order
+- To add or modify initialization steps, either modify the entrypoint script `entrypoint_scripts/90_gnaf_db_setup.sh` or add additional scripts to `entrypoint_scripts/` directory. These can be shell or sql scripts and are executed in sorted name order
 - Any user scripts can be saved to "scripts" folder and accessed from within the container
 - On Linux host systems make sure to change the "group_add" key in the compose file to the id of the group (with write permissions) on the host system for `./data` folder, this will avoid the permissions issue with the bind mounts. OR change the permissions on the host system to allow writes from the container. This should not be an issue on Windows!
 - `Authority Code` and `Standard` table names are matched to the `psv` files using an awk script that relies on the naming scheme/pattern used for the `psv` files. Please look at the code in `entrypoint_scripts/99_gnaf_db_setup.sh`.
