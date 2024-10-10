@@ -2,6 +2,6 @@ FROM postgis/postgis:17-master AS pgimg
 
 RUN apt-get update \
       && apt-get install curl ca-certificates -y \
-      && apt-get install -y --no-install-recommends gawk \
+      && apt-get install -y --no-install-recommends gawk gettext \
       && rm -rf /var/lib/apt/lists/*
 

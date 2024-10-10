@@ -57,7 +57,7 @@ psql -d "$DB_" --username "$POSTGRES_USER" -c "CREATE SCHEMA $SCHEMA_;"
 psql -d "$DB_" --username "$POSTGRES_USER" -c "SET search_path TO $SEARCH_PATH_;"  -f "$GNAF_PROVIDED_SCRIPTS_PATH/GNAF_TableCreation_Scripts/create_tables_ansi.sql"
 
 ## STEP 5
-psql -d "$DB_" --username "$POSTGRES_USER" -c "SET search_path TO $SEARCH_PATH_;"  -f "/$USER_SCRIPTS/load_data.sql"
+psql -d "$DB_" --username "$POSTGRES_USER" -c "SET search_path TO $SEARCH_PATH_;"  -f "$USER_SCRIPTS/load_data.sql"
 
 ## STEP 6
 psql -d "$DB_" --username "$POSTGRES_USER" -c "SET search_path TO $SEARCH_PATH_;" -f "$GNAF_PROVIDED_SCRIPTS_PATH/GNAF_TableCreation_Scripts/add_fk_constraints.sql"
