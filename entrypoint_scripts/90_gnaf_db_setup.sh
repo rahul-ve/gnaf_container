@@ -29,13 +29,15 @@ SEARCH_PATH_="$GNAF_SCHEMA,public"
 
 DATA_FOLDER_IN_CONTAINER="/gnaf_data"
 #GNAF_DATA_FOLDER="$(ls $DATA_FOLDER_IN_CONTAINER | grep -i gda2020)"        # hacky!
-GNAF_DATA_FOLDER="$(find $DATA_FOLDER_IN_CONTAINER -type d -name 'G-NAF' | xargs dirname | xargs basename)"     # looking for G-NAF folder in parent dir
+GNAF_DATA_FOLDER="$(find $DATA_FOLDER_IN_CONTAINER -not -path "${DATA_FOLDER_IN_CONTAINER}/archive/*" -type d -name 'G-NAF' | xargs dirname | xargs basename)"    # looking for G-NAF folder in parent dir
 GNAF_MAIN_DATA_FILES_FOLDER="$(ls $DATA_FOLDER_IN_CONTAINER/$GNAF_DATA_FOLDER/G-NAF | grep -Ee "G-NAF\s+[A-Z]+\s+20[0-9]{2}")"
 GNAF_DATA_FILES_PATH="$DATA_FOLDER_IN_CONTAINER/$GNAF_DATA_FOLDER/G-NAF/$GNAF_MAIN_DATA_FILES_FOLDER"
 GNAF_PROVIDED_SCRIPTS_PATH="$DATA_FOLDER_IN_CONTAINER/$GNAF_DATA_FOLDER/G-NAF/Extras"
 
-## update load_data.sql with the right file path for data files
-perl -i -pe "s|file_path_prefix TEXT := .*$|file_path_prefix TEXT := '$GNAF_DATA_FILES_PATH/';|" "$USER_SCRIPTS/load_data.sql"
+## generate load_data.sql with the right file path for data files
+export REPLACE_WITH_PATH_PREFIX="$GNAF_DATA_FILES_PATH"
+envsubst < "$USER_SCRIPTS/load_data_template.sql" > "$USER_SCRIPTS/load_data.sql"
+# perl -i -pe "s|file_path_prefix TEXT := .*$|file_path_prefix TEXT := '$GNAF_DATA_FILES_PATH/';|" "$USER_SCRIPTS/load_data.sql"
 
 ## STEP 2
 
